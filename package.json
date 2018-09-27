@@ -2,5 +2,14 @@
   "dependencies": {
     "ejs": "^2.6.1",
     "express": "^4.16.3"
+  },
+  "scripts": {
+    "start": "node main",
+    "start-dev": "nodemon main",
+    "start-bash": "PORT=4200 node main",
+    "start-windows": "set PORT=4200 && node main"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.4"
   }
 }
