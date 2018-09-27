@@ -4,7 +4,7 @@ class DAO {
     }
 
     lista(callback) {
-        this.conexao.query("SELECT * from livros", callback);
+        this.conexao.query("SELECT * from Livros", callback);
     }
 
     salva(callback){

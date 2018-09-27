@@ -3,20 +3,21 @@ const LivrosDAO = require("../dao/LivrosDAO3");
 const { getConnection } = require("../db/connectionFactory");
 
 function lista(req, resp){
-
-    // conexao é push
     const conexao = getConnection()
 
     const livrosDAO = new LivrosDAO(conexao)
 
-    // produtos é pull
     livrosDAO.lista(function(erro, produtos){
         if(!erro){
             resp.render('produtos/lista', {
                 livros: produtos
             })
         } else {
-            resp.send(erro)
+            if(process.env.NODE_ENV == "production"){
+                resp.render('erros/erro', {erro: "Contate os admnistradores"})
+            } else {
+                resp.render('erros/erro', {erro})
+            }
         }
     })
 
