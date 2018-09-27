@@ -1,7 +1,7 @@
 const servidor = require('./servidor')
 
-const jsonCofig = require('./config')
+require('dotenv').config()
 
-servidor.listen(jsonCofig.port, function (){
-    console.log("Subiu o servidor em localhost:" + jsonCofig.port)
+servidor.listen(process.env.PORT, function (){
+    console.log("Subiu o servidor em localhost:" + process.env.PORT)
 })
