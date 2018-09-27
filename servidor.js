@@ -6,4 +6,6 @@ servidor.set("view engine", "ejs")
 require('./routes/home')(servidor)
 require('./routes/produtos')(servidor)
 
+servidor.use(express.static('./static'))
+
 module.exports = servidor
