@@ -1,21 +1,7 @@
+const ProdutosController = require('../controllers/produtos')
+
 module.exports = function(servidor){
-
-    servidor.get('/produtos', function(req, resp){
-        const produtos = [
-            {
-                titulo: "Titulo 1"
-            },
-            {
-                titulo: "Titulo 2"
-            },
-            {
-                titulo: "Titulo 3"
-            },
-        ]
-    
-        resp.render('produtos/lista', {
-            livros: produtos
-        })
-    })
-
+    servidor.get('/produtos', ProdutosController.lista)
+    servidor.get('/produtos/form', ProdutosController.form)
+    servidor.post('/produtos', ProdutosController.cadastro)
 }
