@@ -1,15 +1,9 @@
-const mysql = require('mysql')
+const { getConnection } = require("./connectionFactory");
 
 function lista(req, resp){
 
     // conexao é push
-    const conexao = mysql.createConnection({
-        user: process.env.DB_USER,
-        password: process.env.DB_PASSWORD,
-        host: process.env.DB_HOST,
-        database: process.env.DB_NAME,
-        port: process.env.DB_PORT,
-    })
+    const conexao = getConnection()
 
     // produtos é pull
     conexao.query("SELECT * from livros", function(erro, produtos){
@@ -21,7 +15,8 @@ function lista(req, resp){
             resp.send(erro)
         }
     })
-    
+
+    conexao.end()
 }
 
 function cadastro(){
@@ -32,6 +27,7 @@ function form(){
 
 }
 
+// Revealing Modulle Pattern
 module.exports = {
     lista,
     cadastro,
