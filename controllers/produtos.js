@@ -16,7 +16,6 @@ function lista(req, resp){
     })
 }
 
-
 function cadastro(){
 
 }
