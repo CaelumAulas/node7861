@@ -12,28 +12,15 @@ async function lista(req, resp, next){
     conexao.release()
 
     resp.render('produtos/lista', {livros})
-
-    // getConnection()
-    //     .then(conexao => {
-    //         const livrosDAO = new LivrosDAO(conexao)
-            
-    //         const livrosPromise = livrosDAO.lista()
-    //         livrosPromise.then(() => conexao.release())
-
-    //         return livrosPromise
-    //     })
-    //     .then(livros => resp.render('produtos/lista', {livros}))
-    //     .catch(erro => next(erro))
 }
 
-function update(titulo){
-    const conexao = createConnectionSync()
+async function deleteByTitulo(titulo){
+    const conexao = await getConnection()
     const livrosDAO = new LivrosDAO(conexao)
 
-    livrosDAO.get(titulo, function(livro){
-        livrosDAO.deleta(livro)
-        conexao.end()
-    })
+    const livro = await livrosDAO.get(titulo)
+    await livrosDAO.deleta(livro)
+    conexao.release()
 }
 
 function cadastro(){
