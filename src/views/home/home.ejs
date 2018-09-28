@@ -41,8 +41,24 @@
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
-    var socket = io();
+    var socket = io("/chat2");
+
+    socket.on('identifiquei', function(token){
+        alert(token)
+    })
+
+    socket.on('quemEh', function(){
+        socket.emit("souEu", parseInt(Math.random()*99999))
+    })
+
     socket.on('novaPromocao', function (data) {
         alert('Nova promoção - ' + data.titulo + " - " + data.msg);
     });
+
+    socket.on("message", function(msg){
+        alert(msg)
+    })
+    socket.emit("message", "oi")
+
+
 </script>

@@ -8,6 +8,14 @@ require('./routes/home')(servidor)
 
 servidor.use('/produtos', require('./routes/produtos'))
 
+servidor.get("/x", function(req, resp){
+    servidor.get("io").emit("novaPromocao", {
+        titulo: 'Promocao',
+        msg: '50% off'
+    })
+    resp.redirect("/produtos")
+})
+
 servidor.use(express.static(__dirname + '/static'))
 
 servidor.use(function(req, resp){
