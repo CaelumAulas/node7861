@@ -6,8 +6,7 @@ servidor.set("views", __dirname + "/views")
 
 require('./routes/home')(servidor)
 
-const roteadorProdutos = require('./routes/produtos')(express)
-servidor.use('/produtos', roteadorProdutos)
+servidor.use('/produtos', require('./routes/produtos'))
 
 servidor.use(express.static(__dirname + '/static'))
 

@@ -53,18 +53,25 @@ function criaBodyJSON(req, resp, next){
 }
 
 async function cadastro(req, resp, next){
-    const livro = req.body
 
-    const conexao = await getConnection()
-    const livrosDAO = new LivrosDAO(conexao)
-    await livrosDAO.salva(livro)
-    conexao.release()
+    req.assert("titulo", "Título obrigatório").notEmpty()
+    req.assert("preco", "Preço inválido").isNumeric()
 
-    const validationErrors = null;
+    try {
+        await req.asyncValidationErrors()
+    
+        try {
+            const livro = req.body
+            const conexao = await getConnection()
+            const livrosDAO = new LivrosDAO(conexao)
+            await livrosDAO.salva(livro)
+            conexao.release()
+            resp.redirect('/produtos')
+        }catch(e){
+            next(e)
+        }
 
-    if(!validationErrors){
-        resp.redirect('/produtos')
-    } else {
+    } catch(validationErrors){
         resp.render("produtos/form", {
             validationErrors: validationErrors
         })
