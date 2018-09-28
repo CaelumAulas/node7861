@@ -11,7 +11,10 @@ async function lista(req, resp, next){
     
     conexao.release()
 
-    resp.render('produtos/lista', {livros})
+    resp.format({
+        json: () => resp.json(livros),
+        html: () => resp.render('produtos/lista', {livros}),
+    })
 }
 
 async function deleteByTitulo(titulo){
@@ -90,3 +93,4 @@ module.exports = {
     cadastro,
     form
 }
+

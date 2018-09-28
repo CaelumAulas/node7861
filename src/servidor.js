@@ -11,15 +11,23 @@ servidor.use('/produtos', require('./routes/produtos'))
 servidor.use(express.static(__dirname + '/static'))
 
 servidor.use(function(req, resp){
-    resp.render('erros/erro', {erro: "404 – Página não encontrada"})
+    resp
+    .status(404)
+    .format({
+        html: () => resp.render('erros/erro', {erro: "404 – Página não encontrada"}),
+        json: () => resp.json("404 – Página não encontrada")
+    })  
 })
 
 servidor.use(function (erro, req, resp, next){
-    if(process.env.NODE_ENV == "production"){
-        resp.render('erros/erro', {erro: "Contate os admnistradores"})
-    } else {
-        resp.render('erros/erro', {erro})
-    }
+    resp
+        .status(500)
+        .format({
+            html: () => process.env.NODE_ENV == "production"
+                ? resp.render('erros/erro', {erro: "Contate os admnistradores"})
+                : resp.render('erros/erro', {erro}),
+            json: () => resp.json(erro)
+        })
 
     next(erro)
 })
