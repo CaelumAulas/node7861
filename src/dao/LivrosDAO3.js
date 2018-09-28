@@ -5,7 +5,7 @@ class DAO {
 
     lista() {
         return new Promise((callbackSucesso, callbackErro) => {
-            this.conexao.query("SELECT * from Livros", function(erro, produtos){
+            this.conexao.query("SELECT * from livros", function(erro, produtos){
                 try {
                     if(!erro){
                         callbackSucesso(produtos)
@@ -19,8 +19,20 @@ class DAO {
         })
     }
 
-    salva(callback){
-
+    salva(livro){
+        return new Promise((callbackSucesso, callbackErro) => {
+            this.conexao.query("INSERT INTO livros SET ?", livro, function(erro){
+                try {
+                    if(!erro){
+                        callbackSucesso()
+                    } else {
+                        callbackErro(erro)
+                    }
+                } catch(error){
+                    callbackErro(error)
+                }
+            });
+        })
     }
 }
 
