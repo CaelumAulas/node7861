@@ -3,8 +3,20 @@ class DAO {
         this.conexao = conexao
     }
 
-    lista(callback) {
-        this.conexao.query("SELECT * from Livros", callback);
+    lista() {
+        return new Promise((callbackSucesso, callbackErro) => {
+            this.conexao.query("SELECT * from Livros", function(erro, produtos){
+                try {
+                    if(!erro){
+                        callbackSucesso(produtos)
+                    } else {
+                        callbackErro(erro)
+                    }
+                } catch(error){
+                    callbackErro(error)
+                }
+            });
+        })
     }
 
     salva(callback){

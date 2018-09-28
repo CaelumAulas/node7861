@@ -1,31 +1,33 @@
 const LivrosDAO = require("../dao/LivrosDAO3");
 
-const { getConnection } = require("../db/connectionFactory");
+const { createConnectionSync, getConnection } = require("../db/connectionFactory");
 
-function lista(req, resp){
-    const conexao = getConnection()
+async function lista(req, resp, next){
+    const conexao = await getConnection()
 
     const livrosDAO = new LivrosDAO(conexao)
+            
+    const livros = await livrosDAO.lista()
+    
+    conexao.release()
 
-    livrosDAO.lista(function(erro, produtos){
-        if(!erro){
-            resp.render('produtos/lista', {
-                livros: produtos
-            })
-        } else {
-            if(process.env.NODE_ENV == "production"){
-                resp.render('erros/erro', {erro: "Contate os admnistradores"})
-            } else {
-                resp.render('erros/erro', {erro})
-            }
-        }
-    })
+    resp.render('produtos/lista', {livros})
 
-    conexao.end()
+    // getConnection()
+    //     .then(conexao => {
+    //         const livrosDAO = new LivrosDAO(conexao)
+            
+    //         const livrosPromise = livrosDAO.lista()
+    //         livrosPromise.then(() => conexao.release())
+
+    //         return livrosPromise
+    //     })
+    //     .then(livros => resp.render('produtos/lista', {livros}))
+    //     .catch(erro => next(erro))
 }
 
 function update(titulo){
-    const conexao = getConnection()
+    const conexao = createConnectionSync()
     const livrosDAO = new LivrosDAO(conexao)
 
     livrosDAO.get(titulo, function(livro){
@@ -35,7 +37,7 @@ function update(titulo){
 }
 
 function cadastro(){
-    const conexao = getConnection()
+    const conexao = createConnectionSync()
     livrosDAO.salva(conexao, livro)
     conexao.end()
 }
