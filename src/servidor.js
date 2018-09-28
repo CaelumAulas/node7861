@@ -2,11 +2,12 @@ const express = require('express')
 const servidor = express()
 
 servidor.set("view engine", "ejs")
+servidor.set("views", __dirname + "/views")
 
 require('./routes/home')(servidor)
 require('./routes/produtos')(servidor)
 
-servidor.use(express.static('./static'))
+servidor.use(express.static(__dirname + '/static'))
 
 servidor.use(function(req, resp){
     resp.render('erros/erro', {erro: "404 – Página não encontrada"})
